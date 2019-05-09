@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: grey;
+        }
+    </style>
+    <h1 style="color: white; text-align: center">Add details</h1>
+</head>
+
+<body>
+    <center>
+        <form action="/1414/addPost" method="POST">
+            <input type="text" placeholder="Name" name="name" required>
+            <br><br>
+
+            <input type="email" placeholder="Email" name="email" required>
+            <br><br>
+
+            <input type="text" pattern="[789][0-9]{9}" placeholder="Mobile" name="mobile" required> <br><br>
+            <br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </center>
+</body>
+
+</html>

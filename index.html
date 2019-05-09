@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js'></script>
+    <script src='https://rawgit.com/someatoms/jsPDF-AutoTable/master/dist/jspdf.plugin.autotable.js'></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>
+        <center>My Details</center>
+    </h2>
+
+    <input type="button" value="Add" onclick="location.href = 'https://bots-dev.smartbothub.com/1414/add'" />
+    <br><br><br>
+
+    <table class="table   table-responsive  table-striped  table-condensed" id="table">
+
+        <tbody id="tbody">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Edit</button></th>
+                <th>Delete</button></th>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<script>
+    function edit(e) {
+        //var elem = document.getElementById('5cd14473219213371788615f');
+        console.log('edit element........', e.target.id);
+        window.open("https://bots-dev.smartbothub.com/1414/update?id=" + e.target.id, '_self');
+        // $.ajax({
+        //     url: "https://bots-dev.smartbothub.com/1414/update?id" + e.target.id,
+        //     type: "GET",
+        //     success: function (res) {
+
+        //     },
+        //     error: function (a, b, err) {
+        //         alert("Error in getting data");
+        //     }
+        // });
+    };
+
+    function deleteRecord(e) {
+        console.log('delete element........', e.target.id);
+        $.ajax({
+            url: "https://bots-dev.smartbothub.com/1414/deleteAPI",
+            type: "POST",
+            dataType: 'text',
+            data: { id: e.target.id },
+            success: function (res) {
+
+            },
+            error: function (a, b, err) {
+                alert("Error in getting data");
+            }
+        });
+
+        window.open('https://bots-dev.smartbothub.com/1414/', '_self');
+    };
+</script>
+
+<!-- script for getting data from sql-->
+<script>
+    $.ajax({
+        url: "https://bots-dev.smartbothub.com/1414/getDetails",
+        type: "GET",
+        success: function (res) {
+            var transData = res;
+            //adding row to the table
+            var transDataLen = transData.length;
+
+            for (var i = 0; i < transData.length; i++) {
+                var editbtn = $('<button> Edit </button>');
+                var deletebtn = $('<button> Delete </button>');
+
+                //creating entitiy required for table
+                var tr = $('<tr>');
+                var tdName = $('<td>');
+                var tdEmail = $('<td>');
+                var tdMobile = $('<td>');
+                var editTd = $('<td>');
+                var deleteTd = $('<td>');
+
+                editbtn.attr('id', transData[i]._id);
+                deletebtn.attr('id', transData[i]._id);
+                editbtn.click(edit);
+                deletebtn.click(deleteRecord);
+
+                //assigning values to above entity
+                tdName.text(transData[i].username);
+                tdEmail.text(transData[i].email);
+                tdMobile.text(transData[i].mobile);
+                editTd.append(editbtn);
+                deleteTd.append(deletebtn);
+
+                //appending data entity to row
+                tr.append(tdName, tdEmail, tdMobile, editTd, deleteTd);
+
+                //appending row to table
+                $('#tbody').append(tr);
+
+            }
+        },
+        error: function (a, b, err) {
+            alert("Error in getting data");
+        }
+    });
+
+</script>
+
+</html>
